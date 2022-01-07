@@ -18,9 +18,33 @@ function Game(){
   const [ isXNext, setIsXNext ] = useState(true);
   const winner = calculateWinner(squares);
   const [ history, setHistory ] = useState();
-  const [ current, setCurrent ] = useState();
+  const [ current, setCurrent ] = useState(0);
 
 
+
+
+  const history = this.state.history;
+  const current = history[this.state.stepNumber];
+  const winner = calculateWinner(current.squares);
+
+
+  const moves = history.map((step, move)=> {
+    const desc = move ?
+      'Go to move #' + move :
+      'Go to game start';
+    return (
+      <li key={move}>
+        <button onClick={() => this.jumpTo(move)}>{desc}</button>
+      </li>
+    );
+  });
+
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
 
 
 
@@ -35,6 +59,8 @@ function Game(){
       }}
     />;
   }
+
+
 
   return (
     <div className="game">
@@ -59,6 +85,13 @@ function Game(){
           </div>
         </div>
       </div>
+
+      <div className="game-info">
+        <div>{status}</div>
+        <ol>{moves}</ol>
+      </div>
+
+
     </div>
     );
 }
