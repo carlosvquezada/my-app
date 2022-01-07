@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -25,38 +25,34 @@ function Square(props) {
   );
 }
 
-class Board extends React.Component {
-  renderSquare(i) {
-    return (
-      <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-     />
-    );
-  }
 
-  render() {
-    return (
+function Board(props){
+  const [squares, setSquares] = useState(0);
+
+
+  return (
       <div>
         <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
+          <Square value={squares[0]}></Square>
+          <Square value={squares[1]}></Square>
+          <Square value={squares[2]}></Square>
         </div>
         <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
+          <Square value={squares[3]}></Square>
+          <Square value={squares[4]}></Square>
+          <Square value={squares[5]}></Square>
         </div>
         <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
+          <Square value={squares[6]}></Square>
+          <Square value={squares[7]}></Square>
+          <Square value={squares[8]}></Square>
         </div>
       </div>
     );
-  }
+
 }
+
+
 
 class Game extends React.Component {
   constructor(props) {
