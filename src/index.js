@@ -12,6 +12,46 @@ function Square({value, onClick}) {
 }
 
 
+
+function RenderSquare({squareIndex, setSquares, setStepNumber, setIsXNext, setCurrent, setHistory, squares, history, isXNext, stepNumber}) {
+  console.log(JSON.stringify(squares));
+  return <Square 
+    value={squares[squareIndex]}
+    onClick={() => {
+      const nextSquares = squares.slice();
+      nextSquares[squareIndex] = isXNext ? "X" : "O";
+      setSquares(nextSquares);
+      setStepNumber(stepNumber + 1);
+      const addHistory = [...history, nextSquares];
+      setHistory( addHistory);
+      setIsXNext(!isXNext);
+      // setCurrent(history[history.length -1]);
+    }}
+  />;
+}
+
+
+
+function Moves ( props ) {
+  const {history, jumpTo } = props;
+  console.log('props',props);
+  return <ol>{
+    history.map((step, move)=> {
+    const desc = move ?
+      'Go to move #' + move :
+      'Go to game start';
+    return (
+    
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{desc}</button>
+      </li>
+    );
+  })}
+  </ol>;
+}
+
+
+
 // const history = this.state.
 //     const current = history[history.length -1];
     
@@ -20,7 +60,7 @@ function Square({value, onClick}) {
 function Game(){
   const [ squares, setSquares ] = useState(Array(9).fill(null));
   const [ isXNext, setIsXNext ] = useState(true);
-  const [ history, setHistory ] = useState([{squares: Array(9).fill(null),}]);
+  const [ history, setHistory ] = useState([squares]);
   const [ stepNumber, setStepNumber ] = useState(0);
   const [ current, setCurrent ] = useState();
   
@@ -28,16 +68,6 @@ function Game(){
   const status = getStatus();
   //debugger;
 
-  const moves = history.map((step, move)=> {
-    const desc = move ?
-      'Go to move #' + move :
-      'Go to game start';
-    return (
-      <li key={move}>
-        <button onClick={() => this.To(move)}>{desc}</button>
-      </li>
-    );
-  });
 
   function getStatus(){
     if (winner) {
@@ -48,50 +78,44 @@ function Game(){
   }
 
 
-  function renderSquare(i) {
-    return <Square 
-      value={squares[i]}
-      onClick={() => {
-        const nextSquares = squares.slice();
-        nextSquares[i] = isXNext ? "X" : "O";
-        setSquares(nextSquares);
-        setStepNumber(stepNumber + 1);
-        setHistory(history.slice(0, stepNumber + 1));
-        setIsXNext(!isXNext);
-        setCurrent(history[history.length -1]);
-      }}
-    />;
+  function jumpTo(step) {
+    setStepNumber(step);
+    setSquares(history[step]);
+    setHistory(history.slice(0,step+1));
+    
+    //setIsXNext(step % 2) === 0;
   }
 
-
-
+  const squareProps = {setSquares, setStepNumber, setIsXNext, setCurrent, setHistory, squares, history, isXNext, stepNumber};
+  console.log('squareProps: ',squareProps )
+  console.log('history',history)
   return (
     <div className="game">
       <div className="game-board">
         <div>
           <div className="board-row">
-            {renderSquare(0)}
-            {renderSquare(1)}
-            {renderSquare(2)}
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:0 } } } />
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:1 } } } />
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:2 } } } />
           </div>
 
           <div className="board-row">
-            {renderSquare(3)}
-            {renderSquare(4)}
-            {renderSquare(5)}
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:3 } } } />
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:4 } } } />
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:5 } } } />
           </div>
 
           <div className="board-row">
-            {renderSquare(6)}
-            {renderSquare(7)}
-            {renderSquare(8)}
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:6 } } } />
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:7 } } } />
+            <RenderSquare { ...{...squareProps, ...{ squareIndex:8 } } } />
           </div>
         </div>
       </div>
 
       <div className="game-info">
         <div>{status}</div>
-        <ol>{moves}</ol>
+        <Moves {... {history, jumpTo  } } />
       </div>
 
 
