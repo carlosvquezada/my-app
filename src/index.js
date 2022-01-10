@@ -24,26 +24,28 @@ function Game(){
   const [ stepNumber, setStepNumber ] = useState(0);
   const [ current, setCurrent ] = useState();
   
-  const winner = calculateWinner(current.squares);
+  const winner = calculateWinner(squares);
 
-  const moves = history.map((step, move)=> {
-    const desc = move ?
-      'Go to move #' + move :
-      'Go to game start';
-    return (
-      <li key={move}>
-        <button onClick={() => this.To(move)}>{desc}</button>
-      </li>
-    );
-  });
+  debugger;
 
-    let status;
+  // const moves = history.map((step, move)=> {
+  //   const desc = move ?
+  //     'Go to move #' + move :
+  //     'Go to game start';
+  //   return (
+  //     <li key={move}>
+  //       <button onClick={() => this.To(move)}>{desc}</button>
+  //     </li>
+  //   );
+  // });
+
+  function getStatus(){
     if (winner) {
-      status = 'Winner: ' + winner;
+      return 'Winner: ' + winner;
     } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      return 'Next player: ' + isXNext ? 'X' : 'O';
     }
-
+  }
 
 
   function renderSquare(i) {
