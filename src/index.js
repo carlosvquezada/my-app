@@ -12,6 +12,11 @@ function Square({value, onClick}) {
 }
 
 
+function clickHandler(props){
+
+
+}
+
 
 function RenderSquare({squareIndex, setSquares, setStepNumber, setIsXNext, setCurrent, setHistory, squares, history, isXNext, stepNumber}) {
   console.log(JSON.stringify(squares));
@@ -73,7 +78,8 @@ function Game(){
     if (winner) {
       return 'Winner: ' + winner;
     } else {
-      return 'Next player: ' + isXNext ? 'X' : 'O';
+      console.log('isXNext:',isXNext);
+      return 'Next player: ' + (isXNext ? 'X' : 'O');
     }
   }
 
